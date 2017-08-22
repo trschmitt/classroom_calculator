@@ -7,9 +7,7 @@ end
 
 # Given a grade_hash and assignment number, return all scores for that assignment. Note that Ruby counts arrays from 0, but we are referring to them as 1-10.
 def assignment_scores(grade_hash, assignment_num)
-  grade_hash.map do |key, value|
-    value[assignment_num - 1]
-  end
+  grade_hash.map {|key, value| value[assignment_num - 1]}
 end
 
 # Given a grade_hash and assignment number, return the average score for that assignment. Note that Ruby counts arrays from 0, but we are referring to them as 1-10.
@@ -22,7 +20,8 @@ end
 # Return a hash of students and their average score.
 # TIP: To convert an array like [[:indiana, 90], [:nevada, 80]] to a hash, use .to_h. Also look at Hash#transform_values.
 def averages(grade_hash)
-  grade_hash.transform_values { |scores| scores.reduce(:+) / scores.length }
+  grade_hash
+    .transform_values { |scores| scores.reduce(:+) / scores.length }
 end
 
 # Return a letter grade for a numerical score.
@@ -54,12 +53,15 @@ end
 # Return the average for the entire class.
 def class_average(grade_hash)
   averages(grade_hash)
-    .map {|key, value| value}
+    .map     {|key, value| value}
     .reduce(:+) / grade_hash.length
 end
 
 
 # Return an array of the top `number_of_students` students.
 def top_students(grade_hash, number_of_students)
-
+  averages(grade_hash)
+    .sort_by { |key, value| value}.reverse
+    .map     { |key, value| key }
+    .take(number_of_students)
 end
